@@ -1,0 +1,38 @@
+*********************** original**************************************************
+this.oauthService.loadDiscoveryDocumentAndTryLogin().then(_ => {
+      const returnUrl = this.router.url;
+      if (!this.isAuthenticated()) {
+        this.login();
+        return false;
+      } else {
+        // this.silentRefresh();
+        const url = (this.oauthService.state) ? this.oauthService.state : (returnUrl) ? returnUrl : '/unauthorized';
+        this.notifySuccessFulLogin.emit(this.isAuthenticated());
+        this.router.navigateByUrl(url);
+        return true;
+      }
+    });
+    
+    
+  ************************ Manipulated **************************************
+  this.oauthService.loadDiscoveryDocumentAndTryLogin().then(_ => {
+      // const returnUrl = this.router.url;
+      --------- My manipulation start----------------
+      let returnUrl;
+      if (!this.router.url.includes('dashboard')) {
+        returnUrl = '/dashboard';
+      } else {
+        returnUrl = this.router.url;
+      }
+      -------- end-------------------------------
+      if (!this.isAuthenticated()) {
+        this.login();
+        return false;
+      } else {
+        // this.silentRefresh();
+        const url = (this.oauthService.state) ? this.oauthService.state : (returnUrl) ? returnUrl : '/unauthorized';
+        this.notifySuccessFulLogin.emit(this.isAuthenticated());
+        this.router.navigateByUrl(url);
+        return true;
+      }
+    });
